@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static 'css/style-admin' %}">
+{% endblock links %}
+
+
+{% block content %}
+
+<div class="banner">
+      <button class="btn">+</button>
+      <form style="display: inline;" id="bgimg-form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="image" id="bgimg" />
+        <input
+          type="text"
+          class="tbox"
+          name="cafe_name"
+          id="cafe_name"
+          placeholder="Enter Cafe/Site Name"
+        />
+      </form>
+      <button class="btn savebtn" id="savebtn">Save</button>
+    </div>
+    <div class="container"></div>
+    <!-- ------------------------------   -->
+    <!-- <div class="element" id="div1" style="background-color: red"></div> -->
+    
+    {% csrf_token %}
+    <script>
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    </script>
+
+    <div class="container">
+      {% for table in tables %}
+      <div style="position: absolute; top: {{table.top}}px; left: {{table.left}}px;" class="element" id="elem{{forloop.counter}}"></div>
+      <br />
+      {% endfor %}
+    </div>
+    <!-- ------------------------------   -->
+    
+    
+    {% endblock content %}
+    
+    {% block scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'js/script-admin.js' %}"></script>
+    {% endblock scripts %}
+  
+  
