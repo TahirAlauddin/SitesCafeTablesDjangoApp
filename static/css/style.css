@@ -94,24 +94,6 @@
         font-weight: 300;
         font-size: 14px; }
 
-.category .over {
-  height: 100vh;
-  width: 100%;
-  background-position: center;
-  background-size: cover;
-  background-image: url(../img/img3.jpg); }
-  .category .over .part {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    background-color: #00000099;
-    height: 100%;
-    color: #ffffff; }
-    .category .over .part h1 {
-      font-size: 70px; }
-      .category .over .part h1 span {
-        color: #FF6F61; }
 
 .category-module .recipe-stack {
   text-align: center;
@@ -249,23 +231,6 @@
       padding: 0;
       border-radius: 0;
       color: #ffffff; }
-
-.sec-module .mod-tri {
-  background-image: url(../img/img1.jpg);
-  box-shadow: inset 0 0 99999px rgba(0, 0, 0, 0.7);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover; }
-  .sec-module .mod-tri h1 {
-    color: #ffffff;
-    font-size: 30px; }
-  .sec-module .mod-tri .but {
-    text-align: center; }
-    .sec-module .mod-tri .but .btn {
-      background-color: transparent;
-      border: 3px solid #ffffff;
-      color: #ffffff;
-      padding: 10px 20px; }
 
 .sec-module .mod-for {
   background-color: #f8f8f8; }
