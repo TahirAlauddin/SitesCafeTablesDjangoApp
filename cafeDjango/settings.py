@@ -13,7 +13,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -155,3 +155,6 @@ ACCOUNT_ADAPTER = 'authentication.adapter.CustomUserAdapter'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
+import django_heroku
+
+django_heroku.settings(locals())
