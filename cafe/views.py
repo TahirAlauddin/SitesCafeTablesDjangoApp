@@ -40,11 +40,12 @@ def view_create_cafe(request):
             cafe = Cafe.objects.create(name=cafe_name)
             cafe.save()
 
-            for table_number, table_distance_top, table_distance_left, table_label in zip(
-                                                                            tables_numbers,
-                                                                            tables_distance_top,
-                                                                            tables_distance_left,
-                                                                            tables_label):
+            for table_number, table_distance_top, \
+                table_distance_left, table_label in zip(
+                                                        tables_numbers,
+                                                        tables_distance_top,
+                                                        tables_distance_left,
+                                                        tables_label):
                 table = Table.objects.create(table_number=table_number, 
                                     top=table_distance_top,
                                     left=table_distance_left,
