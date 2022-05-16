@@ -155,6 +155,9 @@ ACCOUNT_ADAPTER = 'authentication.adapter.CustomUserAdapter'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
+#? Emails
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 import django_heroku
 
 django_heroku.settings(locals())

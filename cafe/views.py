@@ -1,7 +1,4 @@
 from django.shortcuts import render, redirect
-from django.views.generic import (CreateView, ListView, 
-                                  UpdateView, DeleteView,
-                                  DetailView)
 from .models import Cafe, Table
 from django.contrib import messages 
 from django.contrib.auth.decorators import login_required
@@ -82,12 +79,20 @@ def view_home(request):
     return render(request, "cafe/list-cafe.html", context=context)
 
 
+@login_required
 def view_delete_cafe(request, pk):
-    cafe = Cafe.objects.get(pk=pk)    
-    cafe.delete()
-    return redirect('home')
+    if not request.user.is_staff:
+        messages.add_message(request, level=messages.ERROR, message="You don't have permission to delete!")
+        return redirect('home')
+    if request.method == "POST":
+        cafe = Cafe.objects.get(pk=pk)    
+        cafe.delete()
+        return redirect('home')
+    cafe = Cafe.objects.get(pk=pk)
+    return render(request, 'cafe/delete-cafe.html', context={'cafe': cafe})
 
 
+@login_required
 def view_update_cafe(request, pk):
     if request.method == "POST":
         if request.FILES:
@@ -119,7 +124,7 @@ def view_update_cafe(request, pk):
                                                                             tables_distance_top,
                                                                             tables_distance_left,
                                                                             tables_label):
-                table = Table.objects.get(table_number=table_number)
+                table = cafe.tables.get(table_number=table_number)
 
                 table.top=table_distance_top,
                 table.left=table_distance_left,
