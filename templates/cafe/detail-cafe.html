@@ -104,7 +104,7 @@
     <div id="background-img">
       <div id="container" class="container">
         {% for table in tables %}
-          <div style="background-color: {{table.color}}; position: absolute; top: {{table.top|minus:62}}px; left: {{table.left}}px;" class="element table_title" id="elem{{forloop.counter}}"><p>{{table.label}}</p></div>
+          <div style="background-color: {{table.color}}; position: absolute; top: {{table.top}}px; left: {{table.left}}px;" class="element table_title" id="elem{{forloop.counter}}">{{table.label}}</div>
         {% endfor %}
       </div>
     </div>

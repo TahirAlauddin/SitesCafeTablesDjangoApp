@@ -7,13 +7,11 @@
   width: 50px;
   height: 50px;
   margin: 10px 0px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .color-panel {
-  /* width: 550px; */
-  /* height: 120px; */
-  /* background-color: aqua; */
-  /* padding: 1rem 1rem; */
   background-color: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(5px);
   height: 4.1em;
@@ -30,6 +28,7 @@
 }
 .green {
   background-color: green;
+  color: white;
 }
 .blue {
   background-color: blue;
@@ -217,4 +216,9 @@ form {
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  justify-content: center;
+  text-align: center;
+  font-size: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: antiquewhite;
 }
