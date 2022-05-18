@@ -58,9 +58,10 @@
     font-size: 19px;
     background: transparent;
     color: white;
+    border: none;
   }
   .btn_change:hover {
-    border: none;
+    color:rgb(0, 0, 0);
   }
   
   .modal {
@@ -161,8 +162,8 @@
       margin:10px 10px; 
     }
     .container .element{
-      width: 70px;
-      height: 70px;
+      width: 50px;
+      height: 50px;
     }
   }
   
@@ -178,11 +179,18 @@
       width: 70px;
       height: 70px;
     }
-  
     
   }
 
   #background-image {
     height: 1000px;
     width: 1000px;
+  }
+
+  .table_title {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
   }

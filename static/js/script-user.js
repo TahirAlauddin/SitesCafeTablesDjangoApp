@@ -1,16 +1,33 @@
 const tables = document.querySelectorAll(".element");
 const color_panel = document.querySelector(".color-panel");
 const container = document.querySelector(".container");
+let color_selector = document.getElementById("color-selector");
+let counter = 0;
 HideColors();
 let current_selected;
 container.addEventListener("dblclick", function (e) {
+  console.log("double clicked")
   if (e.target.classList.contains("element")) {
+
+    //? Adjusting top positioning of tables
+    let tables = document.getElementById('container');
+    let table;
+    let previous_top;
+    let new_top;  
+    for (let i=0; i < tables.children.length; i++) {
+      table = tables.children[i];
+      previous_top = parseInt( table.style.top.slice(0, table.style.top.length-2) );
+    }
+    
     if (e.target == current_selected) {
-      RemoveBoarder();
+      RemoveBorder();
       HideColors();
+      color_selector.style.display = "none";
+      current_selected = null;
     } else {
       current_selected = e.target;
-      RemoveBoarder();
+      color_selector.style.display = "flex";
+      RemoveBorder();
       ShowColors();
       color_panel.addEventListener("click", function (color) {
         if (color.target.classList.contains("green")) {
@@ -38,14 +55,15 @@ container.addEventListener("dblclick", function (e) {
 });
 
 //Remove Borders
-const RemoveBoarder = function () {
+const RemoveBorder = function () {
   tables.forEach((table) => {
     table.style.border = "none";
   });
 };
 
 //Show Color Panel
-const ShowColors = function () {
+// const ShowColors = function () {
+function ShowColors() {
   color_panel.classList.remove("hidden");
 };
 

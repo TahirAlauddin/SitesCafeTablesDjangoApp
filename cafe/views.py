@@ -59,6 +59,8 @@ def view_create_cafe(request):
 
 def view_detail_cafe(request, pk):
     cafe = Cafe.objects.get(pk=pk)    
+    tables = cafe.tables.all()
+    context = {'cafe': cafe, 'tables': tables, 'title': 'Detail Cafe'}
     if request.method == 'POST':
         data_dictionary = request.POST.dict()
         data_dictionary.pop('csrfmiddlewaretoken')
@@ -67,10 +69,7 @@ def view_detail_cafe(request, pk):
             table.color = table_color
             table.save()
         messages.add_message(request, level=messages.INFO, message="Colors saved!")
-        return redirect('home')
         
-    tables = cafe.tables.all()
-    context = {'cafe': cafe, 'tables': tables, 'title': 'Detail Cafe'}
     return render(request, "cafe/detail-cafe.html", context=context)
 
 
@@ -107,30 +106,33 @@ def view_update_cafe(request, pk):
             cafe.name = cafe_name
             cafe.save()
 
-        for i in request:
+        for i in list(request):
             #? Get tables positions and information from JSON
             data = json.loads(i)
-            tables_numbers = list(data['tables'].keys())
             tables_distance_top = list(data['array_distance_top'])
             tables_distance_left = list(data['array_distance_left'])
             tables_label = list(data['array_labels'])
+            tables_numbers = list(range(len(tables_label)))
             cafe_name = data['cafe_name']
+
             print(tables_numbers, tables_distance_top, tables_distance_left, cafe_name)
             print(tables_label)
 
             cafe = Cafe.objects.get(pk=pk)
 
-            for table_number, table_distance_top, table_distance_left, table_label in zip(
-                                                                            tables_numbers,
-                                                                            tables_distance_top,
-                                                                            tables_distance_left,
-                                                                            tables_label):
-                table = cafe.tables.get(table_number=table_number)
 
-                table.top=table_distance_top,
-                table.left=table_distance_left,
-                table.label=table_label,
-                table.cafe=cafe
+            for table_number, table_distance_top, \
+                table_distance_left, table_label in zip(
+                                                    tables_numbers,
+                                                    tables_distance_top,
+                                                    tables_distance_left,
+                                                    tables_label):
+                table, created = cafe.tables.get_or_create(table_number=table_number)
+
+                table.top = table_distance_top
+                table.left = table_distance_left
+                table.label = table_label
+                table.cafe = cafe
 
                 table.save()
             break

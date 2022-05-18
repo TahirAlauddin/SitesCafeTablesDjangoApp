@@ -1,3 +1,4 @@
+{% load customfilters %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -6,32 +7,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static  'css/style-user.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style-user.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style-navbar.css' %}" />
     <title>{{title}}</title>
   </head>
 
   <body>
     <style>
-      .nav {
-        background-image: url("{% static 'img/nav-bg.png' %}");
-        /* margin-bottom: 10px; */
-        background-position: center center;
-        /* background-size: cover; */
-        height: 4.1em;
-      }
-      
     body {
       font-family: Arial, Helvetica, sans-serif;
     }
+
     #background-img {
       height: 1000px;
       width: 1000px;
       background: url("{{cafe.image.url}}") no-repeat;
-    
+      position: fixed;
+
     }    
 
     </style>
-    <div class="top__navbar">
+    {% comment %} <div class="top__navbar">
       <div class="navbar">
         <div class="left_side">
           <a href="{% url 'home' %}">Home</a>
@@ -60,8 +56,36 @@
           </svg>
         </div>
       </div>
-    </div>
-    <div class="nav">
+    </div> {% endcomment %}
+
+
+    <nav class="nav collapsible">
+      <a class="nav__title" href="#">My Site</a>
+      <svg class="icon icon--white nav__toggler" id="light" enable-background="new 0 0 24 24" height="512"
+          viewBox="0 0 24 24" width="512" xmlns="http://www.w3.org/2000/svg">
+          <g>
+              <path
+                  d="m21.5 24h-19c-1.379 0-2.5-1.122-2.5-2.5v-19c0-1.378 1.121-2.5 2.5-2.5h19c1.379 0 2.5 1.122 2.5 2.5v19c0 1.378-1.121 2.5-2.5 2.5zm-19-23c-.827 0-1.5.673-1.5 1.5v19c0 .827.673 1.5 1.5 1.5h19c.827 0 1.5-.673 1.5-1.5v-19c0-.827-.673-1.5-1.5-1.5z" />
+          </g>
+          <g>
+              <path d="m16.5 8h-9c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h9c.276 0 .5.224.5.5s-.224.5-.5.5z" />
+          </g>
+          <g>
+              <path d="m16.5 12.5h-9c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h9c.276 0 .5.224.5.5s-.224.5-.5.5z" />
+          </g>
+          <g>
+              <path d="m16.5 17h-9c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h9c.276 0 .5.224.5.5s-.224.5-.5.5z" />
+          </g>
+      </svg>
+      <ul class="list nav__list collapsible__content">
+          <li class="nav__item"><a style="text-decoration: underline;" href="{% url 'home' %}">Home</a></li>
+          <li class="nav__item"><a style="text-decoration: underline;" href="{% url 'update-cafe' cafe.pk %}">Update</a></li>
+          <li class="nav__item"><a style="text-decoration: underline;" href="{% url 'delete-cafe' cafe.pk %}">Delete</a></li>
+      </ul>
+  </nav>
+
+
+    <div class="nav" id="color-selector">
       <div class="color-panel">
         <div class="pink color"></div>
         <div class="orange color"></div>
@@ -77,18 +101,18 @@
         </form>
         <button class="btn_save_colors" id="savebtn" onclick="saveColors()">Save</button>
       </div>
-    </div>
+    </div> 
     <div id="background-img">
       <div id="container" class="container">
         {% for table in tables %}
-          <div style="background-color: {{table.color}}; position: absolute; top: {{table.top|add:50}}px; left: {{table.left}}px;" class="element" id="elem{{forloop.counter}}"><p>{{table.label}}</p></div>
+          <div style="background-color: {{table.color}}; position: absolute; top: {{table.top|minus:62}}px; left: {{table.left}}px;" class="element table_title" id="elem{{forloop.counter}}"><p>{{table.label}}</p></div>
         {% endfor %}
-  
       </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script src="{% static 'js/script-user.js' %}"></script>
+    <script src="{% static 'js/script-navbar.js' %}"></script>
   </body>
 </html>
