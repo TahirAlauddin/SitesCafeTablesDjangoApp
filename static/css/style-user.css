@@ -9,6 +9,11 @@
   margin: 10px 0px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+
 }
 
 .color-panel {
@@ -26,33 +31,17 @@
   border-radius: 50%;
   display: inline-block;
 }
-.green {
-  background-color: green;
-  color: white;
-}
-.blue {
-  background-color: blue;
-}
-.orange {
-  background-color: orange;
-}
-.pink {
-  background-color: pink;
-}
-.yellow {
-  background-color: yellow;
-}
-.white {
-  background-color: white;
-}
-.gold {
-  background-color: gold;
-}
-.red {
-  background-color: red;
-}
+
 .btn_save_colors {
-  width: 60px;
+  width: 7rem;
+  background-color: #4caf50;
+  color: white;
+  padding: 14px 14px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  opacity: 0.9;
+
 }
 .hidden {
   display: none;
@@ -107,16 +96,6 @@ hr {
 }
 
 /* Set a style for all buttons */
-button {
-  background-color: #4caf50;
-  color: white;
-  padding: 14px 14px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  opacity: 0.9;
-}
 
 button:hover {
   opacity: 1;
@@ -148,9 +127,7 @@ form {
   .container {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 10px;
-    margin: 10px 10px;
-    
+    gap: 10px;    
   }
   .container .element {
     width: 50px;
@@ -163,7 +140,6 @@ form {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
-    margin: 10px 10px;
   }
   .container .element {
     width: 50px;
@@ -211,14 +187,28 @@ form {
 
 
 .table_title {
-  -webkit-touch-callout: none;
+  /* -webkit-touch-callout: none; */
   -webkit-user-select: none;
-  -khtml-user-select: none;
+  /* -khtml-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
-  justify-content: center;
-  text-align: center;
-  font-size: 10px;
-  font-family: Arial, Helvetica, sans-serif;
-  color: antiquewhite;
+  -ms-user-select: none; */
+}
+
+.btn_change {
+  margin-left: 20px;
+  margin-right: 10px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 19px;
+  background: transparent;
+  color: white;
+  border: none;
+
+  display: block;
+  margin: 10px 10px;
+  width: 20px;
+}
+
+.unselected-color {
+  border: 3px solid #444 !important;
 }

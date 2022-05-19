@@ -2,22 +2,12 @@ const tables = document.querySelectorAll(".element");
 const color_panel = document.querySelector(".color-panel");
 const container = document.querySelector(".container");
 let color_selector = document.getElementById("color-selector");
-let counter = 0;
+const delete_btn = document.getElementById("delete");
+let available_color;
 HideColors();
 let current_selected;
 container.addEventListener("dblclick", function (e) {
-  console.log("double clicked")
   if (e.target.classList.contains("element")) {
-
-    //? Adjusting top positioning of tables
-    let tables = document.getElementById('container');
-    let table;
-    let previous_top;
-    let new_top;  
-    for (let i=0; i < tables.children.length; i++) {
-      table = tables.children[i];
-      previous_top = parseInt( table.style.top.slice(0, table.style.top.length-2) );
-    }
     
     if (e.target == current_selected) {
       RemoveBorder();
@@ -30,26 +20,47 @@ container.addEventListener("dblclick", function (e) {
       RemoveBorder();
       ShowColors();
       color_panel.addEventListener("click", function (color) {
-        if (color.target.classList.contains("green")) {
-          current_selected.style.backgroundColor = "green";
-        } else if (color.target.classList.contains("blue")) {
-          current_selected.style.backgroundColor = "blue";
-        } else if (color.target.classList.contains("orange")) {
-          current_selected.style.backgroundColor = "orange";
-        } else if (color.target.classList.contains("white")) {
-          current_selected.style.backgroundColor = "white";
-        } else if (color.target.classList.contains("red")) {
-          current_selected.style.backgroundColor = "red";
-        } else if (color.target.classList.contains("yellow")) {
-          current_selected.style.backgroundColor = "yellow";
-        } else if (color.target.classList.contains("pink")) {
-          current_selected.style.backgroundColor = "pink";
-        } else if (color.target.classList.contains("gold")) {
-          current_selected.style.backgroundColor = "gold";
+
+
+        if (color.target.classList.contains(colors[0])) {
+            console.log(colors[0]);
+            current_selected.style.backgroundColor = colors[0];
+          }
+        for (let i=0; i < colors.length; i++) {
+          available_color = colors[i];
+          console.log(available_color);
+          if (color.target.classList.contains(available_color)) {
+            current_selected.style.backgroundColor = available_color;
+          }
         }
 
+        // if (color.target.classList.contains("green")) {
+        //   current_selected.style.backgroundColor = "green";
+        // } else if (color.target.classList.contains("blue")) {
+        //   current_selected.style.backgroundColor = "blue";
+        // } else if (color.target.classList.contains("orange")) {
+        //   current_selected.style.backgroundColor = "orange";
+        // } else if (color.target.classList.contains("white")) {
+        //   current_selected.style.backgroundColor = "white";
+        // } else if (color.target.classList.contains("red")) {
+        //   current_selected.style.backgroundColor = "red";
+        // } else if (color.target.classList.contains("yellow")) {
+        //   current_selected.style.backgroundColor = "yellow";
+        // } else if (color.target.classList.contains("pink")) {
+        //   current_selected.style.backgroundColor = "pink";
+        // } else if (color.target.classList.contains("gold")) {
+        //   current_selected.style.backgroundColor = "gold";
+        // }
+
       });
-      current_selected.style.border = "2px solid black";
+
+
+      delete_btn.addEventListener('click', (e) => {
+        current_selected.classList = "element table_title unselected-color"
+      })
+
+      e.target.style.setProperty('border', "2px solid black", "important");
+      // current_selected.style.border = "2px solid black";
     }
   }
 });
@@ -72,43 +83,63 @@ function HideColors() {
   color_panel.classList.add("hidden");
 }
 
-function saveColors() {
-  let arrayColors = [];
-  let child;
-  let color;
-  let parent = document.getElementById('container');
-  let children = parent.children;
-  for (let i = 0; i < children.length; i++) {
-    child = children[i];
-    color = child.style.backgroundColor;
+// function saveColors() {
+//   let arrayColors = [];
+//   let child;
+//   let color;
+//   let parent = document.getElementById('container');
+//   let children = parent.children;
+//   for (let i = 0; i < children.length; i++) {
+//     child = children[i];
+//     color = child.style.backgroundColor;
     
-    if (color == 'red') {
-      color = 'red';
-    } else if (color == 'gold') { 
-      color = 'gold';
-    } else if (color == 'pink') { 
-      color = 'pink';
-    } else if (color == 'orange') { 
-      color = 'orange';
-    } else if (color == 'yellow') { 
-      color = 'yellow';
-    }  else if (color == 'blue') { 
-      color = 'blue';
-    }  else if (color == 'white') { 
-      color = 'white';
-    }  else if (color == 'green') { 
-      color = 'green';
-    }  
-    arrayColors.push(color);
-  }
+//     if (color == 'red') {
+//       color = 'red';
+//     } else if (color == 'gold') { 
+//       color = 'gold';
+//     } else if (color == 'pink') { 
+//       color = 'pink';
+//     } else if (color == 'orange') { 
+//       color = 'orange';
+//     } else if (color == 'yellow') { 
+//       color = 'yellow';
+//     }  else if (color == 'blue') { 
+//       color = 'blue';
+//     }  else if (color == 'white') { 
+//       color = 'white';
+//     }  else if (color == 'green') { 
+//       color = 'green';
+//     } else {
+//       if (child.classList.contains('red')) {
+//         color = 'red';
+//       }else if (child.classList.contains('gold')) {
+//         color = 'gold';
+//       }else if (child.classList.contains('pink')) {
+//         color = 'pink';
+//       }else if (child.classList.contains('orange')) {
+//         color = 'orange';
+//       }else if (child.classList.contains('yellow')) {
+//         color = 'yellow';
+//       }else if (child.classList.contains('blue')) {
+//         color = 'blue';
+//       }else if (child.classList.contains('white')) {
+//         color = 'white';
+//       }else if (child.classList.contains('green')) {
+//         color = 'green';
+//       }
+//     }
+//     arrayColors.push(color);
+//   }
 
-  let form = document.getElementById('form');
-  let inputTag;
-  for (let index = 0; index < arrayColors.length; index++) {
-    const element = arrayColors[index];
-    inputTag = `<input type="text" name="${index}" value="${element}" style="display: none;"></input>`;
-    form.innerHTML = form.innerHTML + inputTag;
-  }
+//   let form = document.getElementById('form');
+//   let inputTag;
+//   for (let index = 0; index < arrayColors.length; index++) {
+//     const element = arrayColors[index];
+//     inputTag = `<input type="text" name="${index}" value="${element}" style="display: none;"></input>`;
+//     form.innerHTML = form.innerHTML + inputTag;
+//   }
 
-  form.submit()
-}
+//   form.submit()
+// }
+
+

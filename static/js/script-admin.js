@@ -15,7 +15,7 @@ let id = 0;
 btn.addEventListener("click", () => {
   id += 1;
   let html = `
-        <div class="element" id="div${id}"  name="box${id}" data-index=${id} style="background-color: red"><p class="table_title p" id=p${id}>T${id}</p></div>
+        <div class="element table_title unselected-color" id="div${id}" name="box${id}" data-index=${id}>T${id}</div>
         `;
   container.insertAdjacentHTML("beforeend", html);
   move();
@@ -33,8 +33,12 @@ const move = function () {
       document.onmousemove = (e) => {
         let x = e.pageX;
         let y = e.pageY;
-        ChooseElement.style.left = x - 50 + "px";
-        ChooseElement.style.top = y - 50 + "px";
+        try {
+          ChooseElement.style.left = x - 50 + "px";
+          ChooseElement.style.top = y - 50 + "px";
+        } catch (error) {
+          
+        }
       };
     });
   });
@@ -50,21 +54,16 @@ container.addEventListener("dblclick", function (e) {
       elem.style.border = "none";
     });
   }
-  if (e.target.classList.contains("p")) {
-    if (e.target.parentNode != current_selected) {
-      // console.log(e.target.parentNode);
-      e.target.parentNode.style.border = "2px solid black";
-      current_selected = e.target.parentNode;
-    } else if (e.target.parentNode == current_selected) {
-      e.target.parentNode.style.border = "none";
-      current_selected = null;
-    }
-  } else if (e.target.classList.contains("element")) {
+  
+  if (e.target.classList.contains("element")) {
+    console.log(1)
     if (e.target == current_selected) {
+      console.log(2)
       e.target.style.border = "none";
       current_selected = null;
     } else if (e.target != current_selected) {
-      e.target.style.border = "2px solid black";
+      console.log(3)
+      e.target.style.setProperty('border', "2px solid black", "important");
       current_selected = e.target;
     }
   }
@@ -83,7 +82,7 @@ renameBtn.addEventListener("click", function () {
     ShowModal();
     add_title.addEventListener("click", function () {
       let label = table_name.value;
-      current_selected.children[0].innerText = label;
+      current_selected.innerText = label;
       HideModal();
     });
   }
@@ -101,7 +100,7 @@ $("#savebtn").click(function () {
     Array.from(divs).forEach((div) => {
       mar_top.push(div.offsetTop);
       mar_left.push(div.offsetLeft);
-      labels.push(div.children[0].innerHTML);
+      labels.push(div.innerHTML);
     });
     //Sending TO Server
 

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Cafe, Table
+from .models import Cafe, Table, Color
 from django.contrib import messages 
 from django.contrib.auth.decorators import login_required
 import json
@@ -60,11 +60,14 @@ def view_create_cafe(request):
 def view_detail_cafe(request, pk):
     cafe = Cafe.objects.get(pk=pk)    
     tables = cafe.tables.all()
-    context = {'cafe': cafe, 'tables': tables, 'title': 'Detail Cafe'}
+    colors = Color.objects.filter(selected=True)
+    context = {'cafe': cafe, 'tables': tables, 'title': 'Detail Cafe',
+                'colors': colors}
     if request.method == 'POST':
         data_dictionary = request.POST.dict()
         data_dictionary.pop('csrfmiddlewaretoken')
         for table_number, table_color in data_dictionary.items():
+            print(table_number, table_color)
             table = cafe.tables.get(table_number=table_number)
             table.color = table_color
             table.save()
@@ -98,12 +101,10 @@ def view_update_cafe(request, pk):
         if request.FILES:
 
             image = request.FILES.get('image')
-            cafe_name = request.POST.get('cafe_name')
 
             #? Creating Cafe object
             cafe = Cafe.objects.get(pk=pk)
             cafe.image = image
-            cafe.name = cafe_name
             cafe.save()
 
         for i in list(request):
@@ -119,7 +120,8 @@ def view_update_cafe(request, pk):
             print(tables_label)
 
             cafe = Cafe.objects.get(pk=pk)
-
+            cafe.name = cafe_name
+            cafe.save()
 
             for table_number, table_distance_top, \
                 table_distance_left, table_label in zip(
@@ -143,3 +145,20 @@ def view_update_cafe(request, pk):
 
     return render(request, 'cafe/update-cafe.html', context=context)
     
+
+@login_required
+def view_color_picklist(request):
+    colors = Color.objects.all()
+    if request.method == "POST":
+        colors_selected = request.POST.getlist('colors')
+        print(colors_selected)
+        for color in colors:
+            #? Only Selected colors must show on the navbar
+            if color.name in colors_selected:
+                color.selected = True
+            else:
+                color.selected = False
+            color.save()
+
+    context = {'colors': colors}
+    return render(request, 'cafe/color-picklist.html', context=context)
