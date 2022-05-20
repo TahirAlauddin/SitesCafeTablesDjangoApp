@@ -61,14 +61,6 @@
         {% for color in colors %}
         <div class="{{color.name}} color"></div>
         {% endfor %}
-        {% comment %} <div class="pink color"></div>
-        <div class="orange color"></div>
-        <div class="green color"></div>
-        <div class="red color"></div>
-        <div class="white color"></div>
-        <div class="yellow color"></div>
-        <div class="blue color"></div>
-        <div class="gold color"></div> {% endcomment %}
         &nbsp;&nbsp;
         <button class="btn_change" id="delete">×</button>
         <form id="form" method="POST" style="display: none;">
@@ -80,7 +72,7 @@
     <div id="background-img">
       <div id="container" class="container">
         {% for table in tables %}
-          <div style="position: absolute; top: {{table.top}}px; left: {{table.left}}px;" class="element table_title {% if table.color %} {{table.color}} {% else %} unselected-color {% endif %} " id="elem{{forloop.counter}}">{{table.label}}</div>
+          <div style="position: absolute; top: {{table.top}}px; left: {{table.left}}px;" class="element table_title{% if table.color %} {{table.color}}{% else %} unselected-color{% endif %}" id="elem{{forloop.counter}}">{{table.label}}</div>
         {% endfor %}
       </div>
     </div>
@@ -98,32 +90,15 @@
         for (let i = 0; i < children.length; i++) {
           child = children[i];
           color = child.style.backgroundColor;
-          
-
-          if (color == '{{colors|slice:"0"}}') {
-            color = '{{colors|slice:"0"}}';
-          }
-
-          {% for color in colors|slice:"1:" %}
-          else if (color == '{{color.name}}') { 
-            color = '{{color.name}}';
-          }
-          {% endfor %} 
-          else {
-            if (child.classList.contains('{{colors|slice:"0"}}')) {
-              color = '{{colors|slice:"0"}}';
-            }
-            {% for color in colors %}
-            else if (child.classList.contains('{{color.name}}')) {
-              color = '{{color.name}}';
-            }
-            {% endfor %}
+          if (color == '') {
+            color = child.classList.value.split(" ")[2];
           }
           arrayColors.push(color);
         }
       
         let form = document.getElementById('form');
         let inputTag;
+        console.log(arrayColors)
         for (let index = 0; index < arrayColors.length; index++) {
           const element = arrayColors[index];
           inputTag = `<input type="text" name="${index}" value="${element}" style="display: none;"></input>`;
@@ -137,6 +112,8 @@
 
     <script>
       let colors = [{% for color in colors %}"{{color.name}}",{% endfor %}];
+      const container = document.querySelector(".container");
+      let current_selected;
     </script>
     <script src="{% static 'js/script-user.js' %}"></script>
     <script src="{% static 'js/script-navbar.js' %}"></script>

@@ -17,7 +17,7 @@ class Table(models.Model):
     left = models.IntegerField(default=0)
     label = models.CharField(max_length=20)
     color = models.CharField(max_length=50,
-                            default='red')
+                            default='unselected-color')
     cafe = models.ForeignKey("Cafe", on_delete=models.CASCADE,
                             related_name='tables')
 

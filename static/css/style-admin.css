@@ -1,6 +1,7 @@
 *{
     margin: 0px;
     padding: 0px;
+    color: black;
   }
   
   body {
@@ -202,6 +203,7 @@
 
   .unselected-color {
     border: 3px solid #444 !important;
+    color: black;
   }
 
   .selected-table {

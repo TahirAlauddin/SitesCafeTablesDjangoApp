@@ -1,11 +1,9 @@
-const tables = document.querySelectorAll(".element");
 const color_panel = document.querySelector(".color-panel");
-const container = document.querySelector(".container");
 let color_selector = document.getElementById("color-selector");
 const delete_btn = document.getElementById("delete");
+const tables = document.querySelectorAll(".element");
 let available_color;
 HideColors();
-let current_selected;
 container.addEventListener("dblclick", function (e) {
   if (e.target.classList.contains("element")) {
     
@@ -21,14 +19,11 @@ container.addEventListener("dblclick", function (e) {
       ShowColors();
       color_panel.addEventListener("click", function (color) {
 
-
         if (color.target.classList.contains(colors[0])) {
-            console.log(colors[0]);
             current_selected.style.backgroundColor = colors[0];
           }
-        for (let i=0; i < colors.length; i++) {
+        for (let i=1; i < colors.length; i++) {
           available_color = colors[i];
-          console.log(available_color);
           if (color.target.classList.contains(available_color)) {
             current_selected.style.backgroundColor = available_color;
           }
@@ -60,7 +55,6 @@ container.addEventListener("dblclick", function (e) {
       })
 
       e.target.style.setProperty('border', "2px solid black", "important");
-      // current_selected.style.border = "2px solid black";
     }
   }
 });
@@ -73,7 +67,6 @@ const RemoveBorder = function () {
 };
 
 //Show Color Panel
-// const ShowColors = function () {
 function ShowColors() {
   color_panel.classList.remove("hidden");
 };

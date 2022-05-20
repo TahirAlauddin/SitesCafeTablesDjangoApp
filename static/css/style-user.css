@@ -1,12 +1,13 @@
 * {
   margin: 0px;
   padding: 0px;
+  color: black;
 }
 
 .element {
   width: 50px;
   height: 50px;
-  margin: 10px 0px;
+  /* margin: 1z0px 0px; */
   display: inline-flex;
   align-items: center;
   justify-content: center;

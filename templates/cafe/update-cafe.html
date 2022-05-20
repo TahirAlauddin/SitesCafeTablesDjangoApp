@@ -11,7 +11,7 @@
   <title>Document</title>
 </head>
 
-<body>
+<body onload='move()'>
   <div class="banner">
     <div class="left__side">
       <button class="btn">+</button>
@@ -76,8 +76,9 @@
   <script>
   let url = "/update-cafe/{{cafe.pk}}/";
   </script>
-  <script src="{% static 'js/script-admin.js' %}"></script>
-  <script src="{% static 'js/script-user.js' %}"></script>
+  {% comment %} <script src="{% static 'js/script-admin.js' %}"></script>
+  <script src="{% static 'js/script-user.js' %}"></script> {% endcomment %}
+  <script src="{% static 'js/script-update.js' %}"></script>
 </body>
 
 </html>
