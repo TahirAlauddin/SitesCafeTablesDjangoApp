@@ -72,7 +72,7 @@
     <div id="background-img">
       <div id="container" class="container">
         {% for table in tables %}
-          <div style="position: absolute; top: {{table.top}}px; left: {{table.left}}px;" class="element table_title{% if table.color %} {{table.color}}{% else %} unselected-color{% endif %}" id="{{table.id}}">{{table.label}}</div>
+          <div style="position: absolute; top: {{table.top}}px; left: {{table.left}}px;" class="element table_title{% if table.color %} {{table.color}}{% else %} unselected-color{% endif %}" id="{{table.guid}}">{{table.label}}</div>
         {% endfor %}
       </div>
     </div>
