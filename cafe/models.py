@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Table(models.Model):
-    id = models.UUIDField(primary_key=True)
+    id = models.CharField(max_length=10, primary_key=True)
     top = models.IntegerField(default=0)
     left = models.IntegerField(default=0)
     label = models.CharField(max_length=50)

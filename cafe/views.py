@@ -50,6 +50,7 @@ def view_create_cafe(request):
                                                         tables_distance_top,
                                                         tables_distance_left,
                                                         tables_label):
+
                 table = Table.objects.create(id=table_id, 
                                     top=table_distance_top,
                                     left=table_distance_left,
