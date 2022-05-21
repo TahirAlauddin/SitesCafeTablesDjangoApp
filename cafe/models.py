@@ -2,7 +2,8 @@ from django.db import models
 import uuid
 
 class Table(models.Model):
-    guid = models.CharField(max_length=50, unique=True, default=uuid.uuid4())
+    id = models.IntegerField(primary_key=True)
+    guid = models.CharField(max_length=50, unique=True, default=uuid.uuid4)
     top = models.IntegerField(default=0)
     left = models.IntegerField(default=0)
     label = models.CharField(max_length=50)
