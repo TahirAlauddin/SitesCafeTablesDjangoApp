@@ -72,7 +72,7 @@
     <div id="background-img">
       <div id="container" class="container">
         {% for table in tables %}
-          <div style="position: absolute; top: {{table.top}}px; left: {{table.left}}px;" class="element table_title{% if table.color %} {{table.color}}{% else %} unselected-color{% endif %}" id="elem{{forloop.counter}}">{{table.label}}</div>
+          <div style="position: absolute; top: {{table.top}}px; left: {{table.left}}px;" class="element table_title{% if table.color %} {{table.color}}{% else %} unselected-color{% endif %}" id="{{table.id}}">{{table.label}}</div>
         {% endfor %}
       </div>
     </div>
@@ -83,6 +83,7 @@
     <script>
       function saveColors() {
         let arrayColors = [];
+        let arrayIds = [];
         let child;
         let color;
         let parent = document.getElementById('container');
@@ -90,21 +91,25 @@
         for (let i = 0; i < children.length; i++) {
           child = children[i];
           color = child.style.backgroundColor;
+          id = child.getAttribute('id');
           if (color == '') {
             color = child.classList.value.split(" ")[2];
           }
           arrayColors.push(color);
+          arrayIds.push(id);
         }
       
         let form = document.getElementById('form');
         let inputTag;
         console.log(arrayColors)
+        console.log(arrayIds)
         for (let index = 0; index < arrayColors.length; index++) {
           const element = arrayColors[index];
-          inputTag = `<input type="text" name="${index}" value="${element}" style="display: none;"></input>`;
+          const id = arrayIds[index];
+          inputTag = `<input type="text" name="${id}" value="${element}" style="display: none;"></input>`;
           form.innerHTML = form.innerHTML + inputTag;
         }
-      
+
         form.submit()
       }
       
@@ -113,6 +118,7 @@
     <script>
       let colors = [{% for color in colors %}"{{color.name}}",{% endfor %}];
       const container = document.querySelector(".container");
+      let cafe_name = '{{cafe.name}}';
       let current_selected;
     </script>
     <script src="{% static 'js/script-user.js' %}"></script>

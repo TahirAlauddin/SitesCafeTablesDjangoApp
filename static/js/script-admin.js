@@ -11,11 +11,21 @@ let span = document.getElementsByClassName("close")[0];
 let add_title = document.querySelector("#add_title");
 let current_selected;
 
-let id = 0;
+let id
+let label = 0;
+
+function createUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+     var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+     return v.toString(16);
+  });
+}
+
 btn.addEventListener("click", () => {
-  id += 1;
+  id = createUUID();
+  label += 1;
   let html = `
-        <div class="element table_title unselected-color" id="div${id}" name="box${id}" data-index=${id}>T${id}</div>
+        <div class="element table_title unselected-color" id="${id}" name="box${id}" data-index=${id}>T${label}</div>
         `;
   container.insertAdjacentHTML("beforeend", html);
   move();
@@ -92,6 +102,7 @@ renameBtn.addEventListener("click", function () {
 let mar_top = [];
 let mar_left = [];
 let labels = [];
+let table_ids = [];
 
 
 $("#savebtn").click(function () {
@@ -101,6 +112,7 @@ $("#savebtn").click(function () {
       mar_top.push(div.offsetTop);
       mar_left.push(div.offsetLeft);
       labels.push(div.innerHTML);
+      table_ids.push(div.id);
     });
     //Sending TO Server
 
@@ -113,6 +125,7 @@ $("#savebtn").click(function () {
         "X-CSRFToken": csrftoken,
       },
       body: JSON.stringify({
+        table_ids: table_ids,
         array_distance_top: mar_top,
         array_distance_left: mar_left,
         cafe_name: document.getElementById("cafe_name").value,

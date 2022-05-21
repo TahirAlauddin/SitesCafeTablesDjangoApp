@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
-from .models import Cafe, Table, Color
 from django.contrib import messages 
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django.db import connection
+from .models import Cafe, Table, Color, Record
+import pandas as pd
 import json
 
 
@@ -29,27 +32,28 @@ def view_create_cafe(request):
         for i in request:
             #? Get tables positions and information from JSON
             data = json.loads(i)
+            table_ids = list(data['table_ids'])
             tables_distance_top = list(data['array_distance_top'])
             tables_distance_left = list(data['array_distance_left'])
             tables_label = list(data['array_labels'])
-            tables_numbers = list(range(len(tables_label)))
+            # tables_numbers = list(range(len(tables_label)))
             cafe_name = data['cafe_name']
 
-            print(tables_label)
+            print(data)
 
             cafe = Cafe.objects.create(name=cafe_name)
             cafe.save()
 
-            for table_number, table_distance_top, \
+            for table_id, table_distance_top, \
                 table_distance_left, table_label in zip(
-                                                        tables_numbers,
+                                                        table_ids,
                                                         tables_distance_top,
                                                         tables_distance_left,
                                                         tables_label):
-                table = Table.objects.create(table_number=table_number, 
+                table = Table.objects.create(id=table_id, 
                                     top=table_distance_top,
                                     left=table_distance_left,
-                                    label=table_label,
+                                    label=table_label.strip(),
                                     cafe=cafe)
                 table.save()
             
@@ -66,11 +70,25 @@ def view_detail_cafe(request, pk):
     if request.method == 'POST':
         data_dictionary = request.POST.dict()
         data_dictionary.pop('csrfmiddlewaretoken')
-        for table_number, table_color in data_dictionary.items():
-            print(table_number, table_color)
-            table = cafe.tables.get(table_number=table_number)
+        #? Create new record in database for everytime saved is pressed
+        print(data_dictionary)
+        for table_id, table_color in data_dictionary.items():
+            table = cafe.tables.get(id=table_id)
+            old_color = table.color
+            # Save new color
             table.color = table_color
             table.save()
+
+            #? Only save record when the color field of a table changes
+            if old_color != table_color:
+                allocated = True
+                if table_color == 'unselected-color':
+                    allocated = False
+
+                record = Record.objects.create(date_time=timezone.now(),
+                                            table=table, allocated=allocated)
+                record.save()
+
         messages.add_message(request, level=messages.INFO, message="Colors saved!")
         
     return render(request, "cafe/detail-cafe.html", context=context)
@@ -110,33 +128,39 @@ def view_update_cafe(request, pk):
         for i in list(request):
             #? Get tables positions and information from JSON
             data = json.loads(i)
+            table_ids = list(data['table_ids'])
             tables_distance_top = list(data['array_distance_top'])
             tables_distance_left = list(data['array_distance_left'])
             tables_label = list(data['array_labels'])
-            tables_numbers = list(range(len(tables_label)))
+            # tables_numbers = list(range(len(tables_label)))
             cafe_name = data['cafe_name']
+            print(data)
 
-            print(tables_numbers, tables_distance_top, tables_distance_left, cafe_name)
-            print(tables_label)
 
             cafe = Cafe.objects.get(pk=pk)
             cafe.name = cafe_name
             cafe.save()
 
-            for table_number, table_distance_top, \
+            for table_id, table_distance_top, \
                 table_distance_left, table_label in zip(
-                                                    tables_numbers,
+                                                    table_ids,
                                                     tables_distance_top,
                                                     tables_distance_left,
                                                     tables_label):
-                table, created = cafe.tables.get_or_create(table_number=table_number)
+                table, created = cafe.tables.get_or_create(id=table_id)
 
                 table.top = table_distance_top
                 table.left = table_distance_left
-                table.label = table_label
+                table.label = table_label.strip()
                 table.cafe = cafe
 
                 table.save()
+
+            #? Delete tables from update page 
+            tables_in_database = cafe.tables.all()
+            for table in tables_in_database:
+                if not str(table.id) in table_ids:
+                    table.delete()
             break
 
     cafe = Cafe.objects.get(pk=pk)    
@@ -161,4 +185,52 @@ def view_color_picklist(request):
             color.save()
 
     context = {'colors': colors}
-    return render(request, 'cafe/color-picklist.html', context=context)
+    return render(request, 'color-picklist.html', context=context)
+
+
+@login_required
+def view_delete_table(request):
+    if request.method == 'POST':
+        for i in list(request):
+            #? Get table number and cafe name and information from JSON
+            data = json.loads(i)
+            cafe_name = data['cafe_name']
+            table_number = data['table_number']
+            print("Cafe name", cafe_name, 'table number', table_number)
+            table = Table.objects.get(table_number=table_number, cafe__name=cafe_name)
+            table.delete()
+        return json.dumps(True)
+
+
+
+@login_required
+def view_admin_board(request):
+    if request.method == "POST":
+        generate_csv_file()
+        messages.add_message(request, level=messages.INFO, 
+                            message="Csv file generated successfully!")
+    csv_file = get_csv_file_path()
+    context = {'csv_file': csv_file}
+    return render(request, 'download-data.html')
+
+
+
+def generate_csv_file():
+    queryset = Record.objects.all()
+    records = list(queryset)
+
+    dataframe = pd.read_sql("SELECT * FROM cafe_record", connection, index_col='id')
+    print(dataframe)
+
+    dataframe['tables'] = dataframe['table']
+    # for record in records:
+    #     if record.table:
+    #         # Table still exists
+    #         pass
+    #     else:
+    #         # Table doesn't exist, use deleted_table attribute
+    #         pass
+
+
+def get_csv_file_path():
+    pass

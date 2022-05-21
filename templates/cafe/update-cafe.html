@@ -46,7 +46,7 @@
     <div id="container" class="container">
       <!-- ------------------------------   -->
       {% for table in tables %}
-      <div class="element table_title {% if table.color %} {{table.color}} {% else %} unselected-color {% endif %}" id="div{{forloop.counter}}" name="box{{forloop.counter}}" data-index="1" style="top: {{table.top}}px; left: {{table.left}}px; position: absolute;">
+      <div class="element table_title {% if table.color %} {{table.color}} {% else %} unselected-color {% endif %}" id="{{table.id}}" style="top: {{table.top}}px; left: {{table.left}}px; position: absolute;">
         {{table.label}}
       </div>
       {% endfor %}
