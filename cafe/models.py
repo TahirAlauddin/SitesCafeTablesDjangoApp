@@ -49,7 +49,6 @@ class Record(models.Model):
 
         return str(self.date_time.date()) + str(self.deleted_table)
 
-    
 
     @classmethod
     def get_data_for_specific_date(cls, date):
