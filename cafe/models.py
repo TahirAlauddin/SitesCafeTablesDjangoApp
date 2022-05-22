@@ -3,7 +3,7 @@ import uuid
 
 class Table(models.Model):
     id = models.IntegerField(primary_key=True)
-    guid = models.CharField(max_length=50, unique=True, default=uuid.uuid4)
+    guid = models.CharField(max_length=50, unique=True)
     top = models.IntegerField(default=0)
     left = models.IntegerField(default=0)
     label = models.CharField(max_length=50)
@@ -20,6 +20,7 @@ class Table(models.Model):
             record.deleted_table = f"cafe={str(self.cafe)} label={self.label} id={self.id}"
             record.save()
         super().delete(*args, **kwargs)
+
 
 class Cafe(models.Model):
     name = models.CharField(max_length=255)
@@ -46,7 +47,7 @@ class Record(models.Model):
 
     def __str__(self):
         if self.table:
-            return str(self.date_time.date()) + str(self.table)
+            return str(self.date_time.date()) + " " + str(self.table)
 
         return str(self.date_time.date()) + str(self.deleted_table)
 
@@ -56,8 +57,6 @@ class Record(models.Model):
         # date -> 2000-12-30
         queryset = cls.objects.filter(date_time__contains=date)
         return list(queryset)
-        
-
 
 
 # class Record(models.Model):

@@ -32,6 +32,8 @@ INSTALLED_APPS = [
     # 3rd party libraries
     'allauth',
     'allauth.account',
+    "debug_toolbar",
+    
 
 
 ]
@@ -44,6 +46,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'cafeDjango.urls'
@@ -122,6 +126,12 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+#? Django debug toolbar settings
+INTERNAL_IPS = [
+   "127.0.0.1",
+   "hidden-cove-22044.herokuapp.com",
+   
+ ]
 
 #? Django-allauth Settings
 AUTHENTICATION_BACKENDS = [

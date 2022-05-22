@@ -10,6 +10,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for color in colors:
-            Color.objects.create(name=color, selected=True).save()
+            Color(name=color, selected=True).save()
         self.stdout.write(self.style.SUCCESS( 'Colors Successfully populated' ))
         

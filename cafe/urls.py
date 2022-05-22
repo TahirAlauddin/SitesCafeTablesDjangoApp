@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from django.http import HttpResponse
 from .views import *
 
@@ -15,5 +15,6 @@ urlpatterns = [
     path('color-picklist/', view_color_picklist, name='color-picklist'),
     
     path('data-for-analysis/', view_admin_board, name='admin-board'),
+    path('__debug__/', include('debug_toolbar.urls')),
 
 ]

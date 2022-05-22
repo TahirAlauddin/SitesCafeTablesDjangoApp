@@ -6,7 +6,9 @@ from django.db import connection
 from .models import Cafe, Table, Color, Record
 import pandas as pd
 import json
-
+from colorama import init
+from colorama import Fore, Back, Style
+init(autoreset=True)
 
 @login_required
 def view_create_cafe(request):
@@ -21,11 +23,12 @@ def view_create_cafe(request):
             cafe_name = request.POST.get('cafe_name')
 
             #? Creating Cafe object
+            print(Fore.BLUE + str(cafe))
             cafe = Cafe.objects.get(name=cafe_name)
             cafe.image = image
             cafe.save()
 
-            messages.add_message(request, level=messages.INFO, message="Colors saved!")
+            messages.add_message(request, level=messages.INFO, message="Cafe saved!")
 
             return redirect('home')
 
@@ -39,9 +42,8 @@ def view_create_cafe(request):
             # tables_numbers = list(range(len(tables_label)))
             cafe_name = data['cafe_name']
 
-            print(data)
-
-            cafe = Cafe.objects.create(name=cafe_name)
+            print(Fore.BLUE + str(data))
+            cafe = Cafe(name=cafe_name)
             cafe.save()
 
             for table_id, table_distance_top, \
@@ -51,11 +53,11 @@ def view_create_cafe(request):
                                                         tables_distance_left,
                                                         tables_label):
 
-                table = Table.objects.create(guid=str(table_id), 
-                                    top=table_distance_top,
-                                    left=table_distance_left,
-                                    label=table_label.strip(),
-                                    cafe=cafe)
+                table = Table(guid=str(table_id), 
+                            top=table_distance_top,
+                            left=table_distance_left,
+                            label=table_label.strip(),
+                            cafe=cafe)                    
                 table.save()
             
             break
@@ -72,7 +74,7 @@ def view_detail_cafe(request, pk):
         data_dictionary = request.POST.dict()
         data_dictionary.pop('csrfmiddlewaretoken')
         #? Create new record in database for everytime saved is pressed
-        print(data_dictionary)
+        print(Fore.BLUE + str(data_dictionary))
         for table_id, table_color in data_dictionary.items():
             table = cafe.tables.get(guid=str(table_id))
             old_color = table.color
@@ -86,11 +88,11 @@ def view_detail_cafe(request, pk):
                 if table_color == 'unselected-color':
                     allocated = False
 
-                record = Record.objects.create(date_time=timezone.now(),
-                                            table=table, allocated=allocated)
+                record = Record(date_time=timezone.now(),
+                                table=table, allocated=allocated)
                 record.save()
 
-        messages.add_message(request, level=messages.INFO, message="Colors saved!")
+        messages.add_message(request, level=messages.INFO, message="Cafe saved!")
         
     return render(request, "cafe/detail-cafe.html", context=context)
 
@@ -107,7 +109,8 @@ def view_delete_cafe(request, pk):
         messages.add_message(request, level=messages.ERROR, message="You don't have permission to delete!")
         return redirect('home')
     if request.method == "POST":
-        cafe = Cafe.objects.get(pk=pk)    
+        cafe = Cafe.objects.get(pk=pk)   
+        print(Fore.BLUE + str(cafe)) 
         cafe.delete()
         return redirect('home')
     cafe = Cafe.objects.get(pk=pk)
@@ -135,7 +138,7 @@ def view_update_cafe(request, pk):
             tables_label = list(data['array_labels'])
             # tables_numbers = list(range(len(tables_label)))
             cafe_name = data['cafe_name']
-            print(data)
+            print(Fore.BLUE + str(data)) 
 
 
             cafe = Cafe.objects.get(pk=pk)
@@ -176,7 +179,7 @@ def view_color_picklist(request):
     colors = Color.objects.all()
     if request.method == "POST":
         colors_selected = request.POST.getlist('colors')
-        print(colors_selected)
+        print(Fore.BLUE + str(colors_selected))
         for color in colors:
             #? Only Selected colors must show on the navbar
             if color.name in colors_selected:
@@ -197,7 +200,7 @@ def view_delete_table(request):
             data = json.loads(i)
             cafe_name = data['cafe_name']
             table_number = data['table_number']
-            print("Cafe name", cafe_name, 'table number', table_number)
+            print(Fore.BLUE + "Cafe name" + str(cafe_name) + 'table number' + str(table_number))
             table = Table.objects.get(table_number=table_number, cafe__name=cafe_name)
             table.delete()
         return json.dumps(True)
